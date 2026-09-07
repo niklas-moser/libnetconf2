@@ -499,6 +499,18 @@ int nc_server_config_add_ssh_user_authkey(const struct ly_ctx *ctx, const char *
 int nc_server_config_del_ssh_user_authkey(const char *endpt_name, const char *user_name, struct lyd_node **config);
 
 /**
+ * @brief Hashes a clear-text password the way the server stores it in its configuration.
+ *
+ * Produces a value usable as an 'ietf-ssh-server' hashed-password, that is a crypt(3) SHA-512
+ * digest under a freshly generated random salt ("$6$<salt>$<digest>").
+ *
+ * @param[in] password Clear-text password to hash.
+ * @param[out] hashed_password Hashed password, memory is allocated and has to be freed by the caller.
+ * @return 0 on success, non-zero otherwise.
+ */
+int nc_server_config_hash_password(const char *password, char **hashed_password);
+
+/**
  * @brief Creates new YANG configuration data nodes for an SSH user's password authentication method.
  *
  * @param[in] ctx libyang context.
